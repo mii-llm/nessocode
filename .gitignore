@@ -1,0 +1,64 @@
+# ── Secrets & credentials ─────────────────────────────
+.env
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.yaml
+secrets.json
+
+# ── Memory & session files (project-specific, not shared) ─
+.nesso_memory.md
+*.session.json
+session.json
+
+# ── Python ────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+pip-wheel-metadata/
+
+# ── Virtual environments ───────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Claude Code internals ─────────────────────────────
+.claude/
+
+# ── OS & editor ───────────────────────────────────────
+.DS_Store
+.DS_Store?
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# ── Jupyter ───────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── Logs & temp ───────────────────────────────────────
+*.log
+*.tmp
+*.temp
+/tmp/
+
+# ── Model weights (never commit these) ────────────────
+*.bin
+*.safetensors
+*.gguf
+*.pt
+*.pth

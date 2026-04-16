@@ -1,0 +1,84 @@
+# ─────────────────────────────────────────────
+#  nessocode — configuration
+# ─────────────────────────────────────────────
+#  All values can be overridden with environment variables:
+#    NESSOCODE_MODEL   NESSOCODE_API_URL   TAVILY_API_KEY
+
+# Model served by vLLM
+model: mii-llm/nesso-4B
+
+# vLLM OpenAI-compatible endpoint
+api_url: http://localhost:5555/v1/chat/completions
+
+# Generation settings
+max_tokens: 8192
+repetition_penalty: 1.1
+
+# Stream tokens to the terminal in real-time (recommended)
+stream: true
+
+# Web search — get a free key at https://tavily.com
+# tavily_api_key: tvly-...
+# Or export TAVILY_API_KEY=tvly-...
+
+# Persist conversations across sessions (optional)
+# session_file: ~/.nessocode/session.json
+
+# Skills directory (relative to this file or absolute)
+skills_dir: ./skills
+
+
+# ─────────────────────────────────────────────
+#  MCP Servers
+# ─────────────────────────────────────────────
+#  Each server is started as a subprocess using stdio transport.
+#  Uncomment and configure the ones you want.
+#
+#  Popular servers:
+#    pip install mcp-server-git
+#    npm install -g @modelcontextprotocol/server-filesystem
+#    npm install -g @modelcontextprotocol/server-github
+#    npm install -g @modelcontextprotocol/server-brave-search
+
+mcp_servers:
+
+  # Local git operations (status, log, diff, blame, …)
+  # git:
+  #   command: uvx
+  #   args: ["mcp-server-git", "--repository", "."]
+  #   enabled: true
+
+  # Filesystem access (read/write files outside the cwd)
+  # filesystem:
+  #   command: npx
+  #   args: ["-y", "@modelcontextprotocol/server-filesystem", "/home", "/tmp"]
+  #   enabled: true
+
+  # GitHub — issues, PRs, repos
+  # github:
+  #   command: npx
+  #   args: ["-y", "@modelcontextprotocol/server-github"]
+  #   env:
+  #     GITHUB_PERSONAL_ACCESS_TOKEN: ghp_your_token_here
+  #   enabled: false
+
+  # Brave Search (alternative to Tavily)
+  # brave_search:
+  #   command: npx
+  #   args: ["-y", "@modelcontextprotocol/server-brave-search"]
+  #   env:
+  #     BRAVE_API_KEY: your_key_here
+  #   enabled: false
+
+  # Postgres — query your local database
+  # postgres:
+  #   command: npx
+  #   args: ["-y", "@modelcontextprotocol/server-postgres",
+  #          "postgresql://localhost/mydb"]
+  #   enabled: false
+
+  # Puppeteer — browser automation
+  # puppeteer:
+  #   command: npx
+  #   args: ["-y", "@modelcontextprotocol/server-puppeteer"]
+  #   enabled: false

@@ -1,0 +1,22 @@
+name: tests
+description: "Generate comprehensive unit tests for a function or module"
+aliases: ["/test"]
+system_addition: |
+  You are writing tests. Cover the happy path, edge cases, and error cases.
+  Use the project's existing test framework and naming conventions.
+  Prefer readable test names that describe what is being tested.
+
+prompt: |
+  Generate tests for the specified code (or infer the target from context).
+
+  1. Identify what needs testing.
+  2. Read the source file to understand inputs, outputs, and side effects.
+  3. Check whether a test file already exists; if so, read it to match style.
+  4. Write tests covering:
+     - Happy path: expected inputs produce correct outputs.
+     - Edge cases: empty, None/null, boundary values, large inputs.
+     - Error cases: invalid input, expected exceptions.
+     - Side effects: file writes, network calls (mock if necessary).
+  5. Use the project's test framework (pytest, unittest, jest, etc.).
+  6. Run the tests with `pytest -x` or equivalent to verify they pass.
+  7. Fix any failures before finishing.

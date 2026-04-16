@@ -1,0 +1,27 @@
+name: review
+description: "Review code changes or a specific file for bugs, security, and quality"
+aliases: ["/cr"]
+system_addition: |
+  You are performing a code review. Be thorough, specific, and constructive.
+  Organise findings by severity:
+    🔴 Critical  — must fix before merge (bugs, security issues)
+    🟡 Warning   — should fix (correctness, performance, edge cases)
+    🔵 Suggestion — optional improvements (readability, style)
+  Always reference file names and line numbers.
+
+prompt: |
+  Review the code changes in this repository (or the file/function specified).
+
+  1. Determine what to review:
+     - If a file or function was mentioned, read it directly.
+     - Otherwise run `git diff HEAD` or `git diff --cached` for recent changes.
+  2. For each changed file read the full context, not just the diff.
+  3. Evaluate:
+     - Correctness and logic errors
+     - Security vulnerabilities (injection, auth, exposed secrets, unsafe inputs)
+     - Performance concerns
+     - Unhandled edge cases or missing error handling
+     - Test coverage gaps
+  4. Present findings grouped by severity (Critical / Warning / Suggestion).
+     For each finding: file:line, what the issue is, and a concrete fix.
+  5. End with a one-sentence overall verdict.

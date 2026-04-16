@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.backends.legacy:BuildBackend"
+
+[project]
+name = "nessocode"
+version = "0.1.0"
+description = "A minimal yet powerful local AI coding agent powered by a 4B model via vLLM"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+keywords = ["ai", "coding-agent", "local-llm", "vllm", "mcp"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+dependencies = [
+    "pyyaml>=6.0",
+    "tavily-python>=0.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-asyncio>=0.23",
+]
+
+[project.scripts]
+nessocode = "nessocode:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent*"]
+
+[tool.setuptools.package-data]
+"*" = ["skills/*.yaml"]
+
+[project.urls]
+Homepage   = "https://github.com/mii-llm/nessocode"
+Repository = "https://github.com/mii-llm/nessocode"
+Issues     = "https://github.com/mii-llm/nessocode/issues"

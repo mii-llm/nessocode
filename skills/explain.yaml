@@ -1,0 +1,18 @@
+name: explain
+description: "Explain a file, function, or concept in plain language"
+aliases: ["/ex"]
+
+prompt: |
+  Explain the code specified (or infer what to explain from context).
+
+  1. Identify the target — a file, function, class, or concept.
+  2. Read the relevant source code.
+  3. Produce a clear explanation covering:
+     - **Purpose**: what problem does this solve?
+     - **How it works**: key mechanisms and data flow.
+     - **Non-obvious parts**: tricky logic, design decisions, or gotchas.
+  4. Use simple language. Include short code snippets only when they clarify.
+  5. If the question is high-level ("explain the architecture"), start with a
+     brief summary then go deeper on the important parts.
+
+  Adapt depth to the question. A one-liner function needs a one-line answer.

@@ -1,0 +1,16 @@
+name: fix
+description: "Debug and fix a failing test, error, or unexpected behaviour"
+aliases: ["/f"]
+
+prompt: |
+  Debug and fix the issue described (or the currently failing tests).
+
+  1. Understand the symptom — read the error message or failing test output.
+  2. Locate the relevant code with Grep/Glob/Read.
+  3. Identify the **root cause**, not just the symptom.
+  4. Implement the minimal fix that addresses the root cause without
+     over-engineering or changing unrelated code.
+  5. Verify the fix:
+     - Run the failing test/command again.
+     - Make sure no other tests regressed.
+  6. If the fix requires changing an interface, check all callers first.

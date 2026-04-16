@@ -1,0 +1,22 @@
+name: commit
+description: "Analyse staged changes and create a conventional git commit"
+aliases: ["/gc"]
+system_addition: |
+  You are creating a git commit. Follow the Conventional Commits specification:
+  type(scope): description — keep the subject under 72 characters.
+  Types: feat, fix, docs, style, refactor, perf, test, chore, ci, build.
+  Add a body only when the change is non-obvious or has important context.
+
+prompt: |
+  Create a git commit for the current changes.
+
+  1. Run `git status` to see the overall state.
+  2. Run `git diff --cached` to inspect staged changes.
+     If nothing is staged, run `git diff` and decide whether to stage all or
+     specific files based on the context.
+  3. Compose a commit message:
+     - Subject: `type(scope): short description` (≤ 72 chars)
+     - Body (optional): explain *why*, not *what* — the diff already shows what.
+  4. Create the commit with `git commit -m "..."`.
+
+  Be concise. Do not commit files that might contain secrets or credentials.

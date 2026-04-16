@@ -1,0 +1,19 @@
+name: refactor
+description: "Refactor code for clarity, reducing duplication without changing behaviour"
+aliases: ["/rf"]
+system_addition: |
+  You are refactoring. The external behaviour must remain identical.
+  Run the test suite before and after to confirm no regressions.
+  Make the smallest change that achieves the stated improvement.
+
+prompt: |
+  Refactor the specified code (or infer the target from context).
+
+  1. Read the code to be refactored.
+  2. Run the existing tests to establish a baseline (note passing/failing).
+  3. Identify the improvement: duplication, long function, unclear naming,
+     complex conditionals, missing abstraction, etc.
+  4. Apply the refactor incrementally — one logical change at a time.
+  5. After each change, verify tests still pass.
+  6. Do NOT change behaviour, add features, or refactor unrelated code.
+  7. Summarise what was changed and why in one sentence.
