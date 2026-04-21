@@ -10,9 +10,48 @@ Both functions accept the same arguments.  The streaming variant yields
 events as they arrive so the REPL can print text tokens in real-time.
 """
 import json
+import re
 import urllib.error
 import urllib.request
 from typing import Any, Dict, Generator, List, Optional
+
+# Matches <tool_call>...</tool_call> blocks that vLLM's hermes parser
+# sometimes leaves as raw text (e.g. when arguments are large).
+_TOOL_CALL_RE = re.compile(r"<tool_call>(.*?)</tool_call>", re.DOTALL)
+
+
+def _extract_hermes_tool_calls(text: str) -> tuple:
+    """
+    Scan text for any <tool_call>...</tool_call> blocks that vLLM's hermes
+    parser missed and return (clean_text, extra_tool_use_blocks).
+    """
+    extra: List[dict] = []
+
+    def _replace(m: re.Match) -> str:
+        raw = m.group(1).strip()
+        try:
+            tc = json.loads(raw)
+        except json.JSONDecodeError:
+            return m.group(0)          # leave unparseable blocks in text
+        name = tc.get("name", "")
+        args = tc.get("arguments", tc.get("parameters", {}))
+        if isinstance(args, str):
+            try:
+                args = json.loads(args)
+            except json.JSONDecodeError:
+                args = {"_raw": args}
+        if not name:
+            return m.group(0)
+        extra.append({
+            "type":  "tool_use",
+            "id":    f"hermes_{len(extra)}",
+            "name":  name,
+            "input": args,
+        })
+        return ""
+
+    clean = _TOOL_CALL_RE.sub(_replace, text).strip()
+    return clean, extra
 
 
 # ---------------------------------------------------------------------------
@@ -178,8 +217,15 @@ def stream_response(
 
         # --- build final blocks ---
         blocks: List[dict] = []
+
+        # Rescue any <tool_call> blocks the hermes parser left as raw text
         if text_buf:
-            blocks.append({"type": "text", "text": text_buf})
+            clean_text, rescued = _extract_hermes_tool_calls(text_buf)
+            if clean_text:
+                blocks.append({"type": "text", "text": clean_text})
+            blocks.extend(rescued)
+        else:
+            rescued = []
 
         for idx in sorted(tc_acc.keys()):
             tc = tc_acc[idx]
@@ -248,7 +294,10 @@ def call_response(
     blocks: List[dict] = []
 
     if msg.get("content"):
-        blocks.append({"type": "text", "text": msg["content"]})
+        clean_text, rescued = _extract_hermes_tool_calls(msg["content"])
+        if clean_text:
+            blocks.append({"type": "text", "text": clean_text})
+        blocks.extend(rescued)
 
     for tc in msg.get("tool_calls", []):
         raw_args = tc["function"]["arguments"]
