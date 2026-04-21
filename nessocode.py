@@ -58,6 +58,8 @@ def main() -> None:
                         help="JSON file for conversation persistence")
     parser.add_argument("--version",    action="store_true",
                         help="Print version and exit")
+    parser.add_argument("--task",       "-t", metavar="INSTRUCTION",
+                        help="Run a single task non-interactively and exit")
     args = parser.parse_args()
 
     if args.version:
@@ -83,6 +85,14 @@ def main() -> None:
         config.session_file = args.session
 
     agent = NessoAgent(config)
+
+    if args.task:
+        result = agent.run_once(args.task)
+        if result:
+            print(result)
+        agent.mcp.shutdown_all()
+        sys.exit(0)
+
     agent.run_repl()
 
 

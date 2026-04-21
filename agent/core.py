@@ -439,6 +439,25 @@ class NessoAgent:
         return blocks
 
     # ------------------------------------------------------------------
+    # Headless / single-shot
+    # ------------------------------------------------------------------
+
+    def run_once(self, instruction: str) -> str:
+        """Run a single non-interactive turn and return the final text response."""
+        self.messages.append({"role": "user", "content": instruction})
+        self._run_turn()
+        for msg in reversed(self.messages):
+            if msg["role"] == "assistant":
+                content = msg["content"]
+                if isinstance(content, list):
+                    return "\n".join(
+                        b["text"] for b in content if b.get("type") == "text"
+                    ).strip()
+                if isinstance(content, str):
+                    return content.strip()
+        return ""
+
+    # ------------------------------------------------------------------
     # REPL
     # ------------------------------------------------------------------
 

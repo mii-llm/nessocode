@@ -1,0 +1,13 @@
+[project]
+name = "nessocode-harbor-agent"
+version = "0.1.0"
+description = "Harbor agent wrapper for nessocode"
+requires-python = ">=3.10"
+dependencies = [
+    "harbor",
+    "nessocode @ git+https://github.com/mii-llm/nessocode.git",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.backends.legacy:BuildBackend"
