@@ -13,8 +13,10 @@ from harbor.models.agent.context import AgentContext
 _VLLM_PORT  = 5555
 _VLLM_MODEL = "mii-llm/nesso-4B"
 
-_SRC_PATH     = "/opt/nessocode"
-_TASK_TIMEOUT = 600
+# Root of the nessocode repo on the host (two levels up from this file)
+_HOST_SRC = Path(__file__).resolve().parent.parent
+_SRC_PATH = "/opt/nessocode"
+_TASK_TIMEOUT = 1200
 
 
 class NessocodeAgent(BaseAgent):
@@ -37,27 +39,15 @@ class NessocodeAgent(BaseAgent):
         return "0.1.0"
 
     async def setup(self, environment: BaseEnvironment) -> None:
-        # Ensure python3 and git are present (many task images are bare)
+        # Ensure python3 is available
         await environment.exec(
-            "apt-get install -y -qq python3 python3-pip git 2>/dev/null || true",
+            "apt-get install -y -qq python3 2>/dev/null || true",
             timeout_sec=90,
             user="root",
         )
 
-        # Try git clone first; fall back to curl tarball if git is unavailable
-        clone = await environment.exec(
-            f"git clone --quiet --depth 1 "
-            f"https://github.com/mii-llm/nessocode.git {_SRC_PATH} 2>&1",
-            timeout_sec=60,
-            user="root",
-        )
-        if clone.return_code != 0:
-            await environment.exec(
-                f"curl -sL https://github.com/mii-llm/nessocode/archive/refs/heads/main.tar.gz"
-                f" | tar xz -C /tmp && mv /tmp/nessocode-main {_SRC_PATH}",
-                timeout_sec=60,
-                user="root",
-            )
+        # Upload nessocode source directly from the host — no network needed
+        await environment.upload_dir(_HOST_SRC, _SRC_PATH)
 
         # Install pyyaml — try every available method in order
         await environment.exec(

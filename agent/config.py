@@ -25,7 +25,7 @@ class Config:
     max_tokens: int = 8192
     repetition_penalty: float = 1.1
     stream: bool = True
-    max_tool_calls: int = 20
+    max_tool_calls: int = 50
     tavily_api_key: Optional[str] = None
     mcp_servers: Dict[str, MCPServerConfig] = field(default_factory=dict)
     skills_dir: str = "./skills"
@@ -60,6 +60,7 @@ def load_config(config_path: Optional[str] = None) -> Config:
         "NESSOCODE_MODEL": "model",
         "NESSOCODE_API_URL": "api_url",
         "NESSOCODE_MAX_TOKENS": "max_tokens",
+        "NESSOCODE_MAX_TOOL_CALLS": "max_tool_calls",
         "TAVILY_API_KEY": "tavily_api_key",
     }
     for env_key, conf_key in env_map.items():

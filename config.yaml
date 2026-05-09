@@ -17,6 +17,9 @@ repetition_penalty: 1.1
 # Stream tokens to the terminal in real-time (recommended)
 stream: true
 
+# Maximum tool calls per turn before stopping
+max_tool_calls: 50
+
 # Web search — get a free key at https://tavily.com
 # tavily_api_key: tvly-...
 # Or export TAVILY_API_KEY=tvly-...
