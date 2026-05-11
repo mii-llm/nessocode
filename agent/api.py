@@ -172,7 +172,7 @@ def stream_response(
     tc_acc: Dict[int, Dict[str, str]] = {}
 
     try:
-        with urllib.request.urlopen(req, timeout=180) as resp:
+        with urllib.request.urlopen(req, timeout=600) as resp:
             for raw in resp:
                 line = raw.decode("utf-8").strip()
                 if not line or line == "data: [DONE]":
@@ -283,7 +283,7 @@ def call_response(
     )
 
     try:
-        resp = urllib.request.urlopen(req, timeout=180)
+        resp = urllib.request.urlopen(req, timeout=600)
         data = json.loads(resp.read())
     except urllib.error.HTTPError as exc:
         raise RuntimeError(f"HTTP {exc.code}: {exc.read().decode()[:300]}") from exc

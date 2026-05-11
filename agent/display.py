@@ -1,4 +1,6 @@
 """Terminal display utilities — ANSI rendering for nessocode."""
+from __future__ import annotations
+
 import os
 import re
 
